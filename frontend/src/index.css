@@ -12,6 +12,10 @@
   --color-harvest-gold: #d4af37;
   --color-earth-green: #2d3e2d;
   --color-marble-white: #ffffff;
+  
+  /* Festival Theme (Dynamic) */
+  --color-festival-primary: var(--color-harvest-gold);
+  --color-festival-secondary: var(--color-warm-brown);
 }
 
 html {

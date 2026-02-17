@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import GiftPopup from './GiftPopup';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { getCurrentFestival } from '../utils/festivalUtils';
 
 const Layout = ({ children }) => {
   const { scrollYProgress } = useScroll();
@@ -12,10 +14,16 @@ const Layout = ({ children }) => {
   });
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
   const [isHovering, setIsHovering] = useState(false);
+  const [festival, setFestival] = useState(getCurrentFestival());
 
   useEffect(() => {
+    // Apply festival theme to CSS variables if it's a special occasion
+    if (festival.name !== "Default") {
+      document.documentElement.style.setProperty('--color-festival-primary', festival.primary);
+      document.documentElement.style.setProperty('--color-festival-secondary', festival.secondary);
+    }
+    
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
     };
@@ -40,23 +48,34 @@ const Layout = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-white overflow-x-hidden selection:bg-emerald-900 selection:text-[#d4af37] font-sans">
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[3px] bg-[#d4af37] origin-left z-[200]"
-        style={{ scaleX }}
+        className="fixed top-0 left-0 right-0 h-[3px] origin-left z-[200]"
+        style={{ 
+          scaleX, 
+          backgroundColor: festival.name !== "Default" ? festival.primary : "#d4af37" 
+        }}
       />
+
+      <GiftPopup />
 
       {/* Gold Halo Custom Cursor */}
       <motion.div
-        className="hidden lg:block fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] border border-[#d4af37]/50"
+        className="hidden lg:block fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] border"
+        style={{ borderColor: festival.name !== "Default" ? `${festival.primary}80` : "#d4af3780" }}
         animate={{ 
           x: mousePos.x - 16, 
           y: mousePos.y - 16,
           scale: isHovering ? 2.5 : 1,
-          backgroundColor: isHovering ? "rgba(212, 175, 55, 0.1)" : "rgba(212, 175, 55, 0)",
+          backgroundColor: isHovering 
+            ? (festival.name !== "Default" ? `${festival.primary}1A` : "rgba(212, 175, 55, 0.1)") 
+            : "rgba(212, 175, 55, 0)",
           borderWidth: isHovering ? "1px" : "1.5px"
         }}
         transition={{ type: 'spring', damping: 30, stiffness: 200, mass: 0.5 }}
       >
-        <div className="absolute inset-0 rounded-full border border-[#d4af37]/20 animate-pulse scale-150" />
+        <div 
+          className="absolute inset-0 rounded-full border animate-pulse scale-150" 
+          style={{ borderColor: festival.name !== "Default" ? `${festival.primary}33` : "#d4af3733" }}
+        />
       </motion.div>
 
       <Header />
