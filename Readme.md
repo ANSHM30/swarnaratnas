@@ -12,8 +12,13 @@ Swarnaratna is a website dedicated to selling high-quality dry fruits. This proj
 
 ## Installation
 1. Clone the repository: `git clone <repository-url>`
-2. Install dependencies: `npm install`
-3. Run the development server: `npm run dev`
+2. Change directory: `cd Swarnaratna`
+3. Change directory: `cd frontend`
+4. Install dependencies: `npm i`
+5. Run the development server: `npm run dev`
+6. Change directory: `cd backend`
+7. Install dependencies: `npm i`
+8. Run the development server: `npm run dev`
 
 
 ## Usage
